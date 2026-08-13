@@ -68,8 +68,8 @@ export function ChildDashboard() {
         transition={{ delay: 0.1 }}
         className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4"
       >
-        <StatCard icon="🔥" label="Streak" value={`${profile.dailyStreak} Hari`} color="bg-orange-100" />
-        <StatCard icon="⭐" label="Bintang" value={profile.stars.toString()} color="bg-yellow-100" />
+        <StatCard icon="🔥" label="Streak" value={`${profile.current_streak} Hari`} color="bg-orange-100" />
+        <StatCard icon="⭐" label="Bintang" value="0" color="bg-yellow-100" />
         <StatCard icon="💎" label="Total XP" value={profile.xp.toString()} color="bg-blue-100" />
         <StatCard icon="🎯" label="Akurasi" value="85%" color="bg-green-100" />
       </motion.div>
