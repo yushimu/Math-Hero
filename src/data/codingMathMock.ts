@@ -1,0 +1,88 @@
+import { CodingMathQuestion } from '../types/codingMath';
+
+export const MOCK_CODING_MATH_QUESTIONS: Record<string, CodingMathQuestion[]> = {
+  LEVEL_1: [
+    {
+      id: 'L1_Q1',
+      type: 'NumberPattern',
+      question: 'What is the next number in the pattern? 2, 4, 6, 8, ...',
+      options: ['10', '12', '9', '14'],
+      correctAnswer: '10',
+      explanation: 'The pattern adds 2 each time. 8 + 2 = 10.',
+    },
+    {
+      id: 'L1_Q2',
+      type: 'LogicalMath',
+      question: 'If A = 1, B = 2, C = 3, what is A + B + C?',
+      options: ['5', '6', '7', '8'],
+      correctAnswer: '6',
+      explanation: '1 + 2 + 3 = 6.',
+    },
+    {
+      id: 'L1_Q3',
+      type: 'Comparison',
+      question: 'Which is larger? 3 x 4 OR 5 x 2',
+      options: ['3 x 4', '5 x 2', 'They are equal'],
+      correctAnswer: '3 x 4',
+      explanation: '3 x 4 = 12, and 5 x 2 = 10. 12 is larger than 10.',
+    },
+    {
+      id: 'L1_Q4',
+      type: 'MissingNumber',
+      question: 'Find the missing number: 5 + ? = 12',
+      options: ['6', '7', '8', '9'],
+      correctAnswer: '7',
+      explanation: '12 - 5 = 7.',
+    },
+    {
+      id: 'L1_Q5',
+      type: 'Sequence',
+      question: 'Identify the odd one out: 3, 6, 9, 11, 15',
+      options: ['6', '9', '11', '15'],
+      correctAnswer: '11',
+      explanation: 'All other numbers are multiples of 3.',
+    },
+  ],
+  LEVEL_2: [
+    {
+      id: 'L2_Q1',
+      type: 'NumberPattern',
+      question: 'Find the next number: 1, 4, 9, 16, ...',
+      options: ['20', '24', '25', '30'],
+      correctAnswer: '25',
+      explanation: 'These are square numbers (1x1, 2x2, 3x3, 4x4). Next is 5x5 = 25.',
+    },
+    {
+      id: 'L2_Q2',
+      type: 'MathematicalPuzzle',
+      question: 'I am an odd number. Take away one letter and I become even. What number am I?',
+      options: ['Seven', 'Nine', 'Three', 'Five'],
+      correctAnswer: 'Seven',
+      explanation: 'Remove the "s" from "Seven" and you get "even".',
+    },
+    {
+      id: 'L2_Q3',
+      type: 'LogicalMath',
+      question: 'If 2 cats can catch 2 mice in 2 minutes, how many cats do you need to catch 100 mice in 100 minutes?',
+      options: ['2', '10', '50', '100'],
+      correctAnswer: '2',
+      explanation: '2 cats catch 1 mouse per minute. In 100 minutes, 2 cats can catch 100 mice.',
+    },
+    {
+      id: 'L2_Q4',
+      type: 'Sequence',
+      question: 'Complete the sequence: 10, 8, 11, 9, 12, ...',
+      options: ['9', '10', '11', '13'],
+      correctAnswer: '10',
+      explanation: 'The pattern is -2, +3. So 12 - 2 = 10.',
+    },
+    {
+      id: 'L2_Q5',
+      type: 'WordProblem',
+      question: 'A bat and a ball cost $1.10 in total. The bat costs $1.00 more than the ball. How much does the ball cost?',
+      options: ['$0.05', '$0.10', '$0.15', '$0.20'],
+      correctAnswer: '$0.05',
+      explanation: 'Ball = $0.05, Bat = $1.05. Total = $1.10.',
+    },
+  ],
+};

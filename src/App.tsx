@@ -20,6 +20,8 @@ import { Achievements } from './pages/child/Achievements';
 import { Profile } from './pages/child/Profile';
 import { Progress } from './pages/child/Progress';
 import { ChildOnboarding } from './pages/child/ChildOnboarding';
+import { CodingMathDashboard } from './pages/child/CodingMathDashboard';
+import { CodingMathPractice } from './pages/child/CodingMathPractice';
 
 // Parent Pages
 import { ParentDashboard } from './pages/parent/ParentDashboard';
@@ -60,6 +62,10 @@ export default function App() {
           <Route path="rewards" element={<Rewards />} />
           <Route path="achievements" element={<Achievements />} />
           <Route path="profile" element={<Profile />} />
+          
+          {/* Coding Math Routes */}
+          <Route path="coding-math" element={<CodingMathDashboard />} />
+          <Route path="coding-math/practice/:levelId" element={<CodingMathPractice />} />
         </Route>
 
         {/* Parent Routes */}

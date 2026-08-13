@@ -27,12 +27,12 @@ export function ChildDashboard() {
   const equippedThemeDef = undefined;
 
   return (
-    <div className="space-y-12 pb-12">
+    <div className="space-y-6 pb-8">
       {/* Header Profile / Hero Section */}
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-white p-6 md:p-8 rounded-[32px] border-4 border-blue-100 shadow-lg flex flex-col md:flex-row items-center gap-6 relative overflow-hidden"
+        className="bg-white p-4 md:p-5 rounded-2xl border-2 border-blue-100 shadow-lg flex flex-col md:flex-row items-center gap-4 relative overflow-hidden"
       >
         <div className="absolute top-[-40px] right-[-40px] w-64 h-64 bg-blue-50 rounded-full opacity-50 pointer-events-none"></div>
         <ChildAvatar 
@@ -40,11 +40,11 @@ export function ChildDashboard() {
           avatarIcon={equippedAvatarDef?.icon}
           accessoryIcon={equippedAccessoryDef?.icon}
           themeClass={equippedThemeDef?.value}
-          className="border-4 border-blue-200 relative z-10 shrink-0" 
+          className="border-2 border-blue-200 relative z-10 shrink-0 scale-90" 
         />
         
         <div className="flex-1 w-full text-center md:text-left relative z-10">
-          <h1 className="text-3xl md:text-4xl font-black text-slate-800 mb-2">Halo, {profile.name}! 🌟</h1>
+          <h1 className="text-2xl md:text-3xl font-black text-slate-800 mb-1">Halo, {profile.name}! 🌟</h1>
           <div className="flex flex-col md:flex-row items-center justify-center md:justify-start gap-3 mb-5">
             <Badge variant="info" className="text-sm px-3 py-1">Pahlawan Angka</Badge>
             <span className="text-slate-500 font-bold uppercase tracking-widest text-xs">Siap berpetualang hari ini?</span>
@@ -79,17 +79,17 @@ export function ChildDashboard() {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2 }}
-          className="bg-white p-6 rounded-[32px] border-4 border-green-100 shadow-lg relative overflow-hidden"
+          className="bg-white p-4 rounded-2xl border-2 border-green-100 shadow-lg relative overflow-hidden"
         >
           <div className="absolute -right-4 -top-4 text-8xl opacity-10">🎯</div>
           <div className="relative z-10 flex flex-col h-full">
-            <h2 className="text-2xl font-black text-slate-800 mb-2 uppercase tracking-tight">Tantangan Hari Ini!</h2>
+            <h2 className="text-xl font-black text-slate-800 mb-1 uppercase tracking-tight">Tantangan Hari Ini!</h2>
             
             {challengeData ? (
               <>
-                <p className="text-green-600 font-bold mb-4 line-clamp-2">{challengeData.challenge.title}: {challengeData.challenge.description}</p>
+                <p className="text-green-600 font-bold mb-3 text-sm line-clamp-2">{challengeData.challenge.title}: {challengeData.challenge.description}</p>
                 
-                <div className="bg-green-50 p-4 rounded-2xl mb-6">
+                <div className="bg-green-50 p-3 rounded-xl mb-4">
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-xs font-bold text-green-600 uppercase">Target</span>
                     <span className="text-sm font-black text-green-700">{challengeData.progress.progress} / {challengeData.challenge.target}</span>
@@ -116,7 +116,7 @@ export function ChildDashboard() {
                       <motion.button 
                         whileHover={{ y: -2 }}
                         whileTap={{ y: 2 }}
-                        className="w-full bg-green-500 text-white font-black py-2 rounded-xl border-b-4 border-green-700 shadow-sm text-sm"
+                        className="w-full bg-green-500 text-white font-black py-2 rounded-xl border-b-2 border-green-700 shadow-sm text-sm"
                       >
                         AYO MAIN! 
                       </motion.button>
@@ -138,8 +138,8 @@ export function ChildDashboard() {
 
       {/* Menu Latihan */}
       <div>
-        <h2 className="text-2xl md:text-3xl font-black text-slate-800 mb-6 tracking-tight">Pilih Level Mainmu! 🎮</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+        <h2 className="text-xl md:text-2xl font-black text-slate-800 mb-4 tracking-tight">Pilih Level Mainmu! 🎮</h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
             { id: 'LEVEL_1', title: 'Pemula', desc: 'Mengenal Angka', icon: '🍎', color: 'bg-green-100 text-green-600 border-green-200' },
             { id: 'LEVEL_2', title: 'Dasar', desc: 'Tambah Kurang (20)', icon: '⭐', color: 'bg-blue-100 text-blue-600 border-blue-200' },
@@ -154,12 +154,12 @@ export function ChildDashboard() {
             >
               <Link to={`/child/practice?diff=${level.id}`} className="block h-full">
                 <div 
-                  className={`h-full bg-white p-5 rounded-[24px] border-4 ${level.color.split(' ')[2]} flex flex-col items-center text-center relative transition-transform hover:-translate-y-1 shadow-sm`}
+                  className={`h-full bg-white p-4 rounded-xl border-2 ${level.color.split(' ')[2]} flex flex-col items-center text-center relative transition-transform hover:-translate-y-1 shadow-sm`}
                 >
-                  <div className={`w-16 h-16 ${level.color.split(' ')[0]} rounded-2xl flex items-center justify-center text-4xl mb-3 shadow-sm`}>
+                  <div className={`w-12 h-12 ${level.color.split(' ')[0]} rounded-xl flex items-center justify-center text-3xl mb-2 shadow-sm`}>
                     {level.icon}
                   </div>
-                  <h3 className="text-xl font-black text-slate-800 mb-1">{level.title}</h3>
+                  <h3 className="text-lg font-black text-slate-800 mb-1">{level.title}</h3>
                   <p className="text-slate-400 font-bold text-xs uppercase tracking-widest">{level.desc}</p>
                 </div>
               </Link>
@@ -173,11 +173,11 @@ export function ChildDashboard() {
 
 function StatCard({ icon, label, value, color }: { icon: string, label: string, value: string, color: string }) {
   return (
-    <div className={`p-3 sm:p-4 rounded-3xl border-4 border-white shadow-md ${color} flex items-center gap-2 sm:gap-3`}>
-      <div className="text-2xl sm:text-3xl bg-white/50 w-10 h-10 sm:w-12 sm:h-12 flex shrink-0 items-center justify-center rounded-xl">{icon}</div>
+    <div className={`p-2 sm:p-3 rounded-xl border-2 border-white shadow-sm ${color} flex items-center gap-2`}>
+      <div className="text-xl sm:text-2xl bg-white/50 w-8 h-8 sm:w-10 sm:h-10 flex shrink-0 items-center justify-center rounded-lg">{icon}</div>
       <div className="overflow-hidden">
-        <p className="text-[10px] sm:text-xs font-bold text-slate-500 uppercase tracking-widest truncate">{label}</p>
-        <p className="text-base sm:text-xl font-black text-slate-800 truncate">{value}</p>
+        <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest truncate">{label}</p>
+        <p className="text-sm sm:text-lg font-black text-slate-800 truncate">{value}</p>
       </div>
     </div>
   );

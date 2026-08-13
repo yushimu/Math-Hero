@@ -1,6 +1,6 @@
 import React from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { Home, Trophy, User, LogOut, Gift, Activity } from 'lucide-react';
+import { Home, Trophy, User, LogOut, Gift, Activity, Brain } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { motion } from 'motion/react';
 import { useChildContext } from '../../lib/contexts/ChildContext';
@@ -17,6 +17,7 @@ export function ChildLayout() {
 
   const navItems = [
     { icon: Home, label: 'Beranda', path: '/child' },
+    { icon: Brain, label: 'Coding Math', path: '/child/coding-math' },
     { icon: Trophy, label: 'Prestasi', path: '/child/achievements' },
     { icon: Activity, label: 'Perkembangan', path: '/child/progress' },
     { icon: Gift, label: 'Hadiah', path: '/child/rewards' },
@@ -27,8 +28,8 @@ export function ChildLayout() {
     <div className="min-h-screen bg-[#F0F9FF] text-[#1E293B] flex flex-col md:flex-row font-sans pb-20 md:pb-0">
       
       {/* Desktop Sidebar */}
-      <aside className="hidden md:flex w-56 flex-col bg-white border-r-4 border-blue-100 sticky top-0 h-screen shadow-lg relative z-10">
-        <div className="p-4 border-b-4 border-blue-50">
+      <aside className="hidden md:flex w-48 flex-col bg-white border-r-2 border-blue-100 sticky top-0 h-screen shadow-lg relative z-10">
+        <div className="p-3 border-b-2 border-blue-50">
           <Link to="/child" className="flex items-center gap-3">
              <div className="h-10 w-10 bg-yellow-400 rounded-xl flex items-center justify-center border-b-4 border-yellow-600">
                <span className="text-xl font-black text-white">+</span>
@@ -37,7 +38,7 @@ export function ChildLayout() {
           </Link>
         </div>
 
-        <nav className="flex-1 p-4 space-y-2">
+        <nav className="flex-1 p-3 space-y-2">
           {navItems.map((item) => {
             const isActive = location.pathname === item.path;
             const Icon = item.icon;
@@ -46,9 +47,9 @@ export function ChildLayout() {
                 key={item.path}
                 to={item.path}
                 className={cn(
-                  "flex items-center gap-4 px-4 py-4 rounded-2xl font-bold transition-all",
+                  "flex items-center gap-3 px-3 py-3 rounded-xl font-bold transition-all text-sm",
                   isActive 
-                    ? "bg-blue-600 text-white shadow-md border-b-4 border-blue-800" 
+                    ? "bg-blue-600 text-white shadow-md border-b-2 border-blue-800" 
                     : "bg-white text-blue-500 border-2 border-blue-100 hover:border-blue-300"
                 )}
               >
@@ -59,9 +60,9 @@ export function ChildLayout() {
           })}
         </nav>
 
-        <div className="p-4 border-t-4 border-blue-50 bg-blue-50/50">
-          <div className="flex items-center gap-3 bg-white p-2.5 rounded-2xl border-4 border-blue-100 shadow-sm">
-            <div className="w-10 h-10 bg-blue-100 rounded-xl border-2 border-blue-200 flex items-center justify-center overflow-hidden">
+        <div className="p-3 border-t-2 border-blue-50 bg-blue-50/50">
+          <div className="flex items-center gap-2 bg-white p-2 rounded-xl border-2 border-blue-100 shadow-sm">
+            <div className="w-8 h-8 bg-blue-100 rounded-lg border-2 border-blue-200 flex items-center justify-center overflow-hidden">
               <img src={profile.avatar_url || 'https://api.dicebear.com/7.x/bottts/svg?seed=Felix'} alt="Avatar" className="w-full h-full object-cover" />
             </div>
             <div className="flex-1 overflow-hidden">

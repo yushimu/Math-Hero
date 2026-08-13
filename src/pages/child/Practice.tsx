@@ -293,7 +293,7 @@ export function Practice() {
           <h1 className="text-3xl font-black text-slate-800">Siap-Siap!</h1>
         </div>
 
-        <div className="bg-white p-8 rounded-[40px] border-4 border-blue-100 shadow-xl space-y-8">
+        <div className="bg-white p-6 rounded-[32px] border-4 border-blue-100 shadow-xl space-y-6">
           {/* Operation */}
           <div>
             <h2 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4">Pilih Kekuatanmu</h2>
@@ -308,10 +308,10 @@ export function Practice() {
                 <button 
                   key={op.id}
                   onClick={() => setSelectedOp(op.id as Operation)}
-                  className={`p-4 rounded-3xl border-4 transition-transform ${selectedOp === op.id ? `${op.bg} scale-105 border-b-8` : 'bg-white border-slate-100 hover:border-slate-200'} flex flex-col items-center gap-2`}
+                  className={`p-3 rounded-2xl border-2 transition-transform ${selectedOp === op.id ? `${op.bg} scale-105 border-b-4` : 'bg-white border-slate-100 hover:border-slate-200'} flex flex-col items-center gap-2`}
                 >
-                  <div className={`text-3xl ${op.color}`}>{op.icon}</div>
-                  <div className={`font-bold ${selectedOp === op.id ? op.color : 'text-slate-500'}`}>{op.label}</div>
+                  <div className={`text-2xl ${op.color}`}>{op.icon}</div>
+                  <div className={`font-bold text-sm ${selectedOp === op.id ? op.color : 'text-slate-500'}`}>{op.label}</div>
                 </button>
               ))}
             </div>
@@ -330,17 +330,17 @@ export function Practice() {
                 <button 
                   key={diff.id}
                   onClick={() => setSelectedDiff(diff.id as Difficulty)}
-                  className={`p-4 rounded-3xl border-4 transition-transform ${selectedDiff === diff.id ? `bg-yellow-50 border-yellow-300 border-b-8 scale-105` : 'bg-white border-slate-100 hover:border-slate-200'} flex flex-col items-center gap-2`}
+                  className={`p-3 rounded-2xl border-2 transition-transform ${selectedDiff === diff.id ? `bg-yellow-50 border-yellow-300 border-b-4 scale-105` : 'bg-white border-slate-100 hover:border-slate-200'} flex flex-col items-center gap-1`}
                 >
-                  <div className="text-xl">{diff.stars}</div>
-                  <div className={`font-bold ${selectedDiff === diff.id ? 'text-yellow-700' : 'text-slate-500'}`}>{diff.label}</div>
+                  <div className="text-lg">{diff.stars}</div>
+                  <div className={`font-bold text-sm ${selectedDiff === diff.id ? 'text-yellow-700' : 'text-slate-500'}`}>{diff.label}</div>
                 </button>
               ))}
             </div>
           </div>
 
-          <Button size="lg" className="w-full h-20 text-2xl" onClick={startGame}>
-            AYO MULAI! <Play className="w-8 h-8 ml-2 fill-white" />
+          <Button size="lg" className="w-full h-16 text-xl" onClick={startGame}>
+            AYO MULAI! <Play className="w-6 h-6 ml-2 fill-white" />
           </Button>
         </div>
       </div>
@@ -397,9 +397,9 @@ export function Practice() {
             <Trophy className="w-16 h-16 text-white" />
           </div>
           
-          <h1 className="text-4xl font-black text-slate-800">Misi Berhasil!</h1>
+          <h1 className="text-3xl font-black text-slate-800">Misi Berhasil!</h1>
           
-          <div className="flex justify-center gap-2 text-4xl mb-8">
+          <div className="flex justify-center gap-2 text-4xl mb-6">
             {Array.from({ length: 3 }).map((_, i) => (
               <motion.div
                 key={i}
@@ -527,9 +527,9 @@ export function Practice() {
       </div>
 
       {/* Question Card */}
-      <div className="bg-white rounded-[40px] p-6 sm:p-8 md:p-12 border-4 border-blue-100 text-center shadow-xl relative overflow-hidden">
+      <div className="bg-white rounded-[32px] p-4 sm:p-6 md:p-8 border-4 border-blue-100 text-center shadow-xl relative overflow-hidden">
         <div className="absolute top-[-20px] right-[-20px] w-48 h-48 bg-blue-50 rounded-full opacity-50 pointer-events-none"></div>
-        <h2 className="text-lg sm:text-xl font-bold text-slate-400 uppercase tracking-widest mb-4 sm:mb-6 relative z-10">Berapa Hasilnya?</h2>
+        <h2 className="text-base sm:text-lg font-bold text-slate-400 uppercase tracking-widest mb-2 sm:mb-4 relative z-10">Berapa Hasilnya?</h2>
         
         {selectedDiff === 'LEVEL_1' ? (
           <div className="flex flex-col items-center gap-6 relative z-10 my-4">
@@ -546,7 +546,7 @@ export function Practice() {
             </div>
           </div>
         ) : (
-          <div className="text-[5rem] leading-none sm:text-8xl md:text-9xl font-black text-slate-800 tracking-wider relative z-10 flex justify-center items-center gap-3 sm:gap-6">
+          <div className="text-5xl sm:text-7xl md:text-8xl font-black text-slate-800 tracking-wider relative z-10 flex justify-center items-center gap-2 sm:gap-4">
             <span className="drop-shadow-sm">{currentQ.operand1}</span>
             <span className="text-blue-500 drop-shadow-sm">{getOperationSymbol(currentQ.operation)}</span>
             <span className="drop-shadow-sm">{currentQ.operand2}</span>
@@ -595,7 +595,7 @@ export function Practice() {
             <Button
               key={`${currentIndex}-${choice}-${idx}`}
               variant="default"
-              className="h-24 sm:h-32 text-4xl sm:text-6xl font-black rounded-[32px] border-4 bg-white hover:bg-blue-50 hover:border-blue-300 transition-colors"
+              className="h-16 sm:h-24 text-3xl sm:text-5xl font-black rounded-2xl border-4 bg-white hover:bg-blue-50 hover:border-blue-300 transition-colors"
               onClick={() => handleNumberClick(choice.toString())}
             >
               {choice}
@@ -604,29 +604,29 @@ export function Practice() {
         </div>
       ) : (
         <>
-          <div className="bg-white rounded-[32px] p-4 sm:p-6 border-4 border-blue-100 flex justify-between items-center min-h-[100px] sm:min-h-[120px] shadow-sm relative overflow-hidden">
-            <div className="text-6xl sm:text-7xl font-black text-blue-600 tracking-widest w-full text-center">
+          <div className="bg-white rounded-[24px] p-3 sm:p-4 border-4 border-blue-100 flex justify-between items-center min-h-[80px] sm:min-h-[100px] shadow-sm relative overflow-hidden">
+            <div className="text-5xl sm:text-6xl font-black text-blue-600 tracking-widest w-full text-center">
               {answer || <span className="text-slate-200 animate-pulse">?</span>}
             </div>
           </div>
-          <div className="grid grid-cols-3 gap-2 md:gap-3 mt-6">
+          <div className="grid grid-cols-3 gap-2 md:gap-3 mt-4">
             {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
               <Button 
                 key={num} 
                 variant="default" 
-                className="h-16 sm:h-20 md:h-24 text-3xl sm:text-4xl md:text-5xl font-black rounded-2xl md:rounded-[32px]"
+                className="h-14 sm:h-16 md:h-20 text-2xl sm:text-3xl md:text-4xl font-black rounded-2xl"
                 onClick={() => handleNumberClick(num.toString())}
               >
                 {num}
               </Button>
             ))}
-            <Button variant="danger" className="h-16 sm:h-20 md:h-24 text-sm sm:text-lg uppercase tracking-wider rounded-2xl md:rounded-[32px]" onClick={handleClear}>
+            <Button variant="danger" className="h-14 sm:h-16 md:h-20 text-sm sm:text-base uppercase tracking-wider rounded-2xl" onClick={handleClear}>
               Hapus
             </Button>
-            <Button variant="default" className="h-16 sm:h-20 md:h-24 text-3xl sm:text-4xl md:text-5xl font-black rounded-2xl md:rounded-[32px]" onClick={() => handleNumberClick('0')}>
+            <Button variant="default" className="h-14 sm:h-16 md:h-20 text-2xl sm:text-3xl md:text-4xl font-black rounded-2xl" onClick={() => handleNumberClick('0')}>
               0
             </Button>
-            <Button variant="primary" className="h-16 sm:h-20 md:h-24 text-lg sm:text-2xl font-black rounded-2xl md:rounded-[32px] uppercase tracking-widest" onClick={checkAnswer}>
+            <Button variant="primary" className="h-14 sm:h-16 md:h-20 text-base sm:text-xl font-black rounded-2xl uppercase tracking-widest" onClick={checkAnswer}>
               CEK
             </Button>
           </div>
