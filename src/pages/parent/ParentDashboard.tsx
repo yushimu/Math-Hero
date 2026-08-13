@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Users, Clock, Target, Activity, ChevronRight, Sparkles } from 'lucide-react';
-import { mockParentOverview } from '../../data/mock';
 import { Link } from 'react-router-dom';
 import { ChildrenService } from '../../lib/services/api';
 import type { Database } from '../../lib/database.types';
@@ -8,7 +7,6 @@ import type { Database } from '../../lib/database.types';
 type Child = Database['public']['Tables']['children']['Row'];
 
 export function ParentDashboard() {
-  const overview = mockParentOverview;
   const [children, setChildren] = useState<Child[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -33,10 +31,10 @@ export function ParentDashboard() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard title="Total Children" value={overview.totalChildren} icon={<Users className="w-5 h-5 text-blue-600" />} />
-        <StatCard title="Practice Today" value={overview.practiceToday} icon={<Activity className="w-5 h-5 text-emerald-600" />} />
-        <StatCard title="Avg. Accuracy" value={`${overview.averageAccuracy}%`} icon={<Target className="w-5 h-5 text-purple-600" />} />
-        <StatCard title="Total Time" value={overview.totalPracticeTime} icon={<Clock className="w-5 h-5 text-orange-600" />} />
+        <StatCard title="Total Anak" value={children.length} icon={<Users className="w-5 h-5 text-blue-600" />} />
+        <StatCard title="Latihan Hari Ini" value="0" icon={<Activity className="w-5 h-5 text-emerald-600" />} />
+        <StatCard title="Rata-rata Akurasi" value="0%" icon={<Target className="w-5 h-5 text-purple-600" />} />
+        <StatCard title="Total Waktu" value="0m" icon={<Clock className="w-5 h-5 text-orange-600" />} />
       </div>
 
       <div className="pt-4">

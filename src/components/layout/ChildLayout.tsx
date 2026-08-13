@@ -1,7 +1,6 @@
 import React from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { Home, Trophy, User, LogOut, Gift, Activity } from 'lucide-react';
-import { mockChildProfile } from '../../data/mock';
 import { cn } from '../../lib/utils';
 import { motion } from 'motion/react';
 import { useChildContext } from '../../lib/contexts/ChildContext';
@@ -28,17 +27,17 @@ export function ChildLayout() {
     <div className="min-h-screen bg-[#F0F9FF] text-[#1E293B] flex flex-col md:flex-row font-sans pb-20 md:pb-0">
       
       {/* Desktop Sidebar */}
-      <aside className="hidden md:flex w-72 flex-col bg-white border-r-4 border-blue-100 sticky top-0 h-screen shadow-lg relative z-10">
-        <div className="p-6 border-b-4 border-blue-50">
+      <aside className="hidden md:flex w-56 flex-col bg-white border-r-4 border-blue-100 sticky top-0 h-screen shadow-lg relative z-10">
+        <div className="p-4 border-b-4 border-blue-50">
           <Link to="/child" className="flex items-center gap-3">
-             <div className="h-12 w-12 bg-yellow-400 rounded-xl flex items-center justify-center border-b-4 border-yellow-600">
-               <span className="text-2xl font-black text-white">+</span>
+             <div className="h-10 w-10 bg-yellow-400 rounded-xl flex items-center justify-center border-b-4 border-yellow-600">
+               <span className="text-xl font-black text-white">+</span>
              </div>
-             <div className="text-2xl font-black text-blue-600 tracking-tight">MATH HERO</div>
+             <div className="text-xl font-black text-blue-600 tracking-tight">MATH HERO</div>
           </Link>
         </div>
 
-        <nav className="flex-1 p-6 space-y-3">
+        <nav className="flex-1 p-4 space-y-2">
           {navItems.map((item) => {
             const isActive = location.pathname === item.path;
             const Icon = item.icon;
@@ -60,17 +59,17 @@ export function ChildLayout() {
           })}
         </nav>
 
-        <div className="p-6 border-t-4 border-blue-50 bg-blue-50/50">
-          <div className="flex items-center gap-3 bg-white p-3 rounded-2xl border-4 border-blue-100 shadow-sm">
-            <div className="w-12 h-12 bg-blue-100 rounded-xl border-2 border-blue-200 flex items-center justify-center overflow-hidden">
-              <img src={profile.avatar || 'https://api.dicebear.com/7.x/bottts/svg?seed=Felix'} alt="Avatar" className="w-full h-full object-cover" />
+        <div className="p-4 border-t-4 border-blue-50 bg-blue-50/50">
+          <div className="flex items-center gap-3 bg-white p-2.5 rounded-2xl border-4 border-blue-100 shadow-sm">
+            <div className="w-10 h-10 bg-blue-100 rounded-xl border-2 border-blue-200 flex items-center justify-center overflow-hidden">
+              <img src={profile.avatar_url || 'https://api.dicebear.com/7.x/bottts/svg?seed=Felix'} alt="Avatar" className="w-full h-full object-cover" />
             </div>
             <div className="flex-1 overflow-hidden">
-              <div className="font-black text-slate-800 truncate">{profile.name}</div>
-              <div className="text-xs font-bold text-blue-500 uppercase tracking-widest truncate">Level {profile.level}</div>
+              <div className="font-black text-slate-800 text-sm truncate">{profile.name}</div>
+              <div className="text-[10px] font-bold text-blue-500 uppercase tracking-widest truncate">Level {profile.level}</div>
             </div>
           </div>
-          <Link to="/" className="flex items-center justify-center gap-2 mt-4 text-slate-400 hover:text-pink-500 font-bold transition-colors">
+          <Link to="/" className="flex items-center justify-center gap-2 mt-3 text-slate-400 hover:text-pink-500 font-bold transition-colors text-sm">
             <LogOut className="w-4 h-4" />
             GANTI PROFIL
           </Link>

@@ -1,16 +1,32 @@
 import React from 'react';
 import { useParams, Link, Navigate } from 'react-router-dom';
 import { ArrowLeft, Target, Clock, Activity, Zap, Sparkles } from 'lucide-react';
-import { mockChildrenList, mockChildDetailedStats } from '../../data/mock';
+import { ChildrenService } from '../../lib/services/api';
+import type { Database } from '../../lib/database.types';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Cell } from 'recharts';
+
+type Child = Database['public']['Tables']['children']['Row'];
 
 export function ChildDetail() {
   const { id } = useParams();
-  
-  const child = mockChildrenList.find(c => c.id === id);
-  const stats = mockChildDetailedStats[id as keyof typeof mockChildDetailedStats];
+  const [child, setChild] = useState<Child | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  if (!child || !stats) {
+  React.useEffect(() => {
+    const loadChild = async () => {
+      const data = await ChildrenService.getChildren();
+      const found = data.find(c => c.id === id);
+      setChild(found || null);
+      setLoading(false);
+    };
+    loadChild();
+  }, [id]);
+
+  if (loading) {
+    return <div className="p-8 text-center text-slate-500">Memuat data anak...</div>;
+  }
+
+  if (!child) {
     return <Navigate to="/parent" replace />;
   }
 
@@ -23,17 +39,17 @@ export function ChildDetail() {
       {/* Header Profile */}
       <div className="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row gap-6 md:items-center justify-between">
         <div className="flex items-center gap-6">
-          <div className="w-20 h-20 bg-slate-50 rounded-2xl flex items-center justify-center text-4xl border border-slate-200 shadow-sm">
-            {child.avatar}
+          <div className="w-20 h-20 bg-slate-50 rounded-2xl flex items-center justify-center text-4xl border border-slate-200 shadow-sm overflow-hidden">
+            <img src={child.avatar_url || 'https://api.dicebear.com/7.x/bottts/svg?seed=Felix'} alt="avatar" className="w-full h-full object-cover" />
           </div>
           <div>
             <h1 className="text-3xl font-bold text-slate-900 tracking-tight">{child.name}</h1>
-            <p className="text-slate-500 mt-1 font-medium">Level {child.level} • {child.xp} XP • {child.streak} Day Streak</p>
+            <p className="text-slate-500 mt-1 font-medium">Level {child.level} • {child.xp} XP • {child.current_streak} Hari Streak</p>
           </div>
         </div>
         <div className="bg-emerald-50 text-emerald-700 px-4 py-2 rounded-lg border border-emerald-100 flex items-center gap-2">
           <Target className="w-5 h-5" />
-          <span className="font-semibold text-lg">{child.accuracy}% Accuracy</span>
+          <span className="font-semibold text-lg">0% Accuracy</span>
         </div>
       </div>
 
@@ -44,8 +60,8 @@ export function ChildDetail() {
             <Activity className="w-6 h-6" />
           </div>
           <div>
-            <p className="text-sm font-semibold text-slate-400 uppercase tracking-wider">Learning Progress</p>
-            <p className="text-2xl font-bold text-slate-800">{stats.learningProgress}%</p>
+            <p className="text-sm font-semibold text-slate-400 uppercase tracking-wider">Progress Latihan</p>
+            <p className="text-2xl font-bold text-slate-800">0%</p>
           </div>
         </div>
         <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
@@ -53,8 +69,8 @@ export function ChildDetail() {
             <Clock className="w-6 h-6" />
           </div>
           <div>
-            <p className="text-sm font-semibold text-slate-400 uppercase tracking-wider">Avg Response Time</p>
-            <p className="text-2xl font-bold text-slate-800">{stats.averageResponseTime}</p>
+            <p className="text-sm font-semibold text-slate-400 uppercase tracking-wider">Rata-rata Waktu</p>
+            <p className="text-2xl font-bold text-slate-800">0s</p>
           </div>
         </div>
         <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
@@ -62,8 +78,8 @@ export function ChildDetail() {
             <Zap className="w-6 h-6" />
           </div>
           <div>
-            <p className="text-sm font-semibold text-slate-400 uppercase tracking-wider">Questions Done</p>
-            <p className="text-2xl font-bold text-slate-800">{stats.questionsCompleted}</p>
+            <p className="text-sm font-semibold text-slate-400 uppercase tracking-wider">Soal Terjawab</p>
+            <p className="text-2xl font-bold text-slate-800">0</p>
           </div>
         </div>
       </div>
@@ -71,25 +87,9 @@ export function ChildDetail() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Performance by Subject */}
         <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-          <h2 className="text-lg font-bold text-slate-800 mb-6">Accuracy by Subject</h2>
-          <div className="space-y-5">
-            {stats.accuracyByOperation.map(op => (
-              <div key={op.name}>
-                <div className="flex justify-between text-sm font-semibold mb-2">
-                  <span className="text-slate-700">{op.name}</span>
-                  <span className="text-slate-900">{op.accuracy}%</span>
-                </div>
-                <div className="h-2.5 bg-slate-100 rounded-full overflow-hidden">
-                  <div 
-                    className={`h-full rounded-full transition-all duration-500 ${
-                      op.accuracy >= 80 ? 'bg-emerald-500' : 
-                      op.accuracy >= 60 ? 'bg-yellow-500' : 'bg-rose-500'
-                    }`} 
-                    style={{ width: `${op.accuracy}%` }} 
-                  />
-                </div>
-              </div>
-            ))}
+          <h2 className="text-lg font-bold text-slate-800 mb-6">Akurasi per Materi</h2>
+          <div className="text-center p-6 bg-slate-50 rounded-xl border border-dashed border-slate-200">
+            <p className="text-slate-400 font-medium">Belum ada riwayat latihan</p>
           </div>
         </div>
 
@@ -97,46 +97,24 @@ export function ChildDetail() {
         <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col gap-6">
           <div>
             <h2 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-emerald-500" /> Strengths
+              <Sparkles className="w-5 h-5 text-emerald-500" /> Kelebihan
             </h2>
-            <ul className="space-y-2">
-              {stats.strengths.map((s, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-slate-600 font-medium">
-                  <span className="text-emerald-500 mt-0.5">•</span> {s}
-                </li>
-              ))}
-            </ul>
+            <p className="text-sm text-slate-400 italic">Data tidak cukup</p>
           </div>
           <div className="pt-4 border-t border-slate-100">
             <h2 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
-              <Target className="w-5 h-5 text-orange-500" /> Areas to Improve
+              <Target className="w-5 h-5 text-orange-500" /> Perlu Ditingkatkan
             </h2>
-            <ul className="space-y-2">
-              {stats.areasToImprove.map((a, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-slate-600 font-medium">
-                  <span className="text-orange-500 mt-0.5">•</span> {a}
-                </li>
-              ))}
-            </ul>
+            <p className="text-sm text-slate-400 italic">Data tidak cukup</p>
           </div>
         </div>
       </div>
 
       {/* Recent Activity */}
       <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-        <h2 className="text-lg font-bold text-slate-800 mb-6">Recent Activity</h2>
-        <div className="space-y-4">
-          {stats.recentActivity.map((act, i) => (
-            <div key={i} className="flex items-center justify-between p-4 rounded-xl bg-slate-50 border border-slate-100">
-              <div>
-                <div className="font-semibold text-slate-800">{act.description}</div>
-                <div className="text-xs font-medium text-slate-500 mt-1">{act.date}</div>
-              </div>
-              <div className="bg-white px-3 py-1.5 rounded-lg border border-slate-200 text-sm font-bold text-slate-700 shadow-sm">
-                Score: {act.score}
-              </div>
-            </div>
-          ))}
+        <h2 className="text-lg font-bold text-slate-800 mb-6">Aktivitas Terakhir</h2>
+        <div className="text-center p-6 bg-slate-50 rounded-xl border border-dashed border-slate-200">
+          <p className="text-slate-400 font-medium">Belum ada riwayat aktivitas</p>
         </div>
       </div>
     </div>

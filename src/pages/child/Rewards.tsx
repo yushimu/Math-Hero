@@ -1,18 +1,16 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { Star, Lock, Check } from 'lucide-react';
-import { mockChildProfile, mockRewards } from '../../data/mock';
+import { Star, Lock, Check, Gift } from 'lucide-react';
+import { useChildContext } from '../../lib/contexts/ChildContext';
 import { Button } from '../../components/ui/Button';
 
 export function Rewards() {
-  const [stars, setStars] = useState(mockChildProfile.stars);
-  const [owned, setOwned] = useState<string[]>(mockChildProfile.unlockedRewards);
+  const { activeChild } = useChildContext();
+  const stars = 0; // Stars are not yet implemented in DB properly, default to 0
+  const owned: string[] = [];
 
   const handleBuy = (id: string, cost: number) => {
-    if (stars >= cost && !owned.includes(id)) {
-      setStars(prev => prev - cost);
-      setOwned(prev => [...prev, id]);
-    }
+    // Implement buy logic when real store API is ready
   };
 
   return (
@@ -27,21 +25,10 @@ export function Rewards() {
 
       <p className="text-slate-500 font-bold">Tukarkan Bintangmu dengan karakter dan aksesoris keren!</p>
 
-      <div className="space-y-8">
-        <RewardSection 
-          title="Karakter Baru" 
-          items={mockRewards.filter(r => r.type === 'avatar')} 
-          owned={owned} 
-          stars={stars} 
-          onBuy={handleBuy} 
-        />
-        <RewardSection 
-          title="Aksesoris & Tema" 
-          items={mockRewards.filter(r => r.type !== 'avatar')} 
-          owned={owned} 
-          stars={stars} 
-          onBuy={handleBuy} 
-        />
+      <div className="text-center p-12 bg-white rounded-3xl border-4 border-slate-100 mt-8">
+        <div className="text-5xl mb-4">🏪</div>
+        <h2 className="text-xl font-bold text-slate-400">Toko Sedang Tutup</h2>
+        <p className="text-slate-400 mt-2">Kumpulkan bintang yang banyak, toko hadiah akan segera buka!</p>
       </div>
     </div>
   );

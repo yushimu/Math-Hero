@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { mockChildProfile, mockRewards } from '../../data/mock';
+import { useChildContext } from '../../lib/contexts/ChildContext';
 import { ChildAvatar } from '../../components/ui/ChildAvatar';
 import { Lock, User, Sparkles, Palette, Volume2, VolumeX, PartyPopper } from 'lucide-react';
 import { useSettings } from '../../lib/useSettings';
@@ -10,19 +10,21 @@ type Tab = 'avatar' | 'accessory' | 'theme';
 
 export function Profile() {
   const { settings, toggleSound, toggleCelebration } = useSettings();
-  const profile = mockChildProfile;
+  const { activeChild } = useChildContext();
   const [activeTab, setActiveTab] = useState<Tab>('avatar');
   
+  if (!activeChild) return null;
+  
   // Local state for equipped items (mocking saving to profile)
-  const [equippedAvatar, setEquippedAvatar] = useState(profile.equippedAvatar);
-  const [equippedAccessory, setEquippedAccessory] = useState(profile.equippedAccessory);
-  const [equippedTheme, setEquippedTheme] = useState(profile.equippedTheme);
+  const [equippedAvatar, setEquippedAvatar] = useState<string | undefined>(undefined);
+  const [equippedAccessory, setEquippedAccessory] = useState<string | undefined>(undefined);
+  const [equippedTheme, setEquippedTheme] = useState<string | undefined>(undefined);
 
-  const ownedItems = profile.unlockedRewards;
+  const ownedItems: string[] = [];
 
-  const equippedAvatarDef = mockRewards.find(r => r.id === equippedAvatar);
-  const equippedAccessoryDef = mockRewards.find(r => r.id === equippedAccessory);
-  const equippedThemeDef = mockRewards.find(r => r.id === equippedTheme);
+  const equippedAvatarDef = undefined;
+  const equippedAccessoryDef = undefined;
+  const equippedThemeDef = undefined;
 
   const handleEquip = (type: Tab, id: string) => {
     if (!ownedItems.includes(id)) return;
@@ -36,7 +38,7 @@ export function Profile() {
   };
 
   const renderTabContent = (type: Tab) => {
-    const items = mockRewards.filter(r => r.type === type);
+    const items: any[] = [];
     
     return (
       <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4">
@@ -80,6 +82,11 @@ export function Profile() {
               </motion.div>
             );
           })}
+          {items.length === 0 && (
+            <div className="col-span-3 sm:col-span-4 md:col-span-5 text-center p-8">
+              <p className="text-slate-400 font-bold">Belum ada item tersedia di toko.</p>
+            </div>
+          )}
         </AnimatePresence>
       </div>
     );

@@ -1,18 +1,18 @@
 import React from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Users, LineChart, Settings, LogOut, ChevronLeft } from 'lucide-react';
+import { LayoutDashboard, Users, Settings, LogOut, ChevronLeft } from 'lucide-react';
 import { cn } from '../../lib/utils';
-import { mockParentProfile } from '../../data/mock';
+import { useAuth } from '../../lib/contexts/AuthContext';
 
 export function ParentLayout() {
   const location = useLocation();
-  const profile = mockParentProfile;
+  const { user } = useAuth();
+  const profileName = user?.email?.split('@')[0] || 'Orang Tua';
 
   const navItems = [
-    { icon: LayoutDashboard, label: 'Overview', path: '/parent' },
-    { icon: Users, label: 'Children', path: '/parent/children' },
-    { icon: LineChart, label: 'Reports', path: '/parent/reports' },
-    { icon: Settings, label: 'Settings', path: '/parent/settings' },
+    { icon: LayoutDashboard, label: 'Dashboard', path: '/parent' },
+    { icon: Users, label: 'Anak Saya', path: '/parent/children' },
+    { icon: Settings, label: 'Pengaturan', path: '/parent/settings' },
   ];
 
   return (
@@ -20,11 +20,11 @@ export function ParentLayout() {
       {/* Mobile Header */}
       <header className="md:hidden bg-white border-b border-slate-200 px-4 py-3 flex items-center justify-between sticky top-0 z-50">
         <div className="font-bold text-lg text-slate-800 tracking-tight">Parent Portal</div>
-        <img src={profile.avatarUrl} alt="Profile" className="w-8 h-8 rounded-full border border-slate-200" />
+        <div className="w-8 h-8 rounded-full bg-slate-200 border border-slate-300 flex items-center justify-center text-sm">👨‍👩‍👧</div>
       </header>
 
       {/* Sidebar for Desktop */}
-      <aside className="hidden md:flex w-64 flex-col bg-white border-r border-slate-200 sticky top-0 h-screen z-10">
+      <aside className="hidden md:flex w-56 flex-col bg-white border-r border-slate-200 sticky top-0 h-screen z-10">
         <div className="p-6 border-b border-slate-100">
           <Link to="/parent" className="font-bold text-xl text-slate-900 tracking-tight flex items-center gap-2">
             MATH HERO
@@ -57,9 +57,9 @@ export function ParentLayout() {
 
         <div className="p-4 border-t border-slate-100">
           <div className="flex items-center gap-3 bg-slate-50 p-3 rounded-xl border border-slate-100 mb-4">
-            <img src={profile.avatarUrl} alt="Profile" className="w-9 h-9 rounded-full border border-slate-200" />
+            <div className="w-9 h-9 rounded-full bg-slate-200 border border-slate-300 flex items-center justify-center shrink-0">👨‍👩‍👧</div>
             <div className="flex-1 overflow-hidden">
-              <div className="font-semibold text-sm text-slate-800 truncate">{profile.name}</div>
+              <div className="font-semibold text-sm text-slate-800 truncate">{profileName}</div>
               <div className="text-[10px] font-medium text-slate-500 uppercase truncate">Parent Account</div>
             </div>
           </div>

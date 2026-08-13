@@ -16,7 +16,7 @@ import {
   checkNewBadges,
   evaluateAdaptiveDifficulty
 } from '../../lib/engine';
-import { mockBadges } from '../../data/mock';
+import { BADGE_DEFINITIONS } from '../../lib/badges';
 import { updateDailyChallengeProgress, DailyChallenge } from '../../lib/dailyChallenge';
 import { useChildContext } from '../../lib/contexts/ChildContext';
 import { PracticeService } from '../../lib/services/api';
@@ -43,7 +43,7 @@ export function Practice() {
   // Setup State
   const { activeChild } = useChildContext();
   const [selectedOp, setSelectedOp] = useState<Operation>((searchParams.get('op') as Operation) || 'add');
-  const [selectedDiff, setSelectedDiff] = useState<Difficulty>((searchParams.get('diff') as Difficulty) || 'EASY');
+  const [selectedDiff, setSelectedDiff] = useState<Difficulty>((searchParams.get('diff') as Difficulty) || 'LEVEL_1');
   
   // Playing State
   const totalQuestions = 10;
@@ -65,11 +65,10 @@ export function Practice() {
 
   const getXpGain = (diff: Difficulty) => {
     switch (diff) {
-      case 'BEGINNER': return 10;
-      case 'EASY': return 12;
-      case 'MEDIUM': return 15;
-      case 'HARD': return 20;
-      case 'ADVANCED': return 30;
+      case 'LEVEL_1': return 10;
+      case 'LEVEL_2': return 12;
+      case 'LEVEL_3': return 15;
+      case 'LEVEL_4': return 20;
       default: return 10;
     }
   };
@@ -129,6 +128,14 @@ export function Practice() {
 
   const handleNumberClick = (num: string) => {
     if (feedback === 'CORRECT') return; 
+    
+    // For Level 1, input is a single choice so check immediately
+    if (selectedDiff === 'LEVEL_1') {
+      setAnswer(num);
+      checkAnswerValue(num);
+      return;
+    }
+
     if (answer.length < 4) {
       setAnswer(prev => prev + num);
       setFeedback('NONE'); 
@@ -138,10 +145,10 @@ export function Practice() {
   const handleClear = () => setAnswer('');
   const handleDelete = () => setAnswer(prev => prev.slice(0, -1));
 
-  const checkAnswer = () => {
-    if (!answer || feedback === 'CORRECT') return;
+  const checkAnswerValue = (val: string) => {
+    if (!val || feedback === 'CORRECT') return;
     
-    const numAnswer = parseInt(answer, 10);
+    const numAnswer = parseInt(val, 10);
     const currentQ = questions[currentIndex];
     const isCorrect = numAnswer === currentQ.correctAnswer;
     
@@ -194,6 +201,8 @@ export function Practice() {
       }, 1000);
     }
   };
+
+  const checkAnswer = () => checkAnswerValue(answer);
 
   const finishGame = async (finalBestStreak: number) => {
     const firstTryCorrect = questions.filter(q => q.attempts === 1).length;
@@ -311,13 +320,12 @@ export function Practice() {
           {/* Difficulty */}
           <div>
             <h2 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4">Pilih Level</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
               {[
-                { id: 'BEGINNER', label: 'Pemula', stars: '⭐' },
-                { id: 'EASY', label: 'Mudah', stars: '⭐⭐' },
-                { id: 'MEDIUM', label: 'Sedang', stars: '⭐⭐⭐' },
-                { id: 'HARD', label: 'Sulit', stars: '⭐⭐⭐⭐' },
-                { id: 'ADVANCED', label: 'Master', stars: '🌟' },
+                { id: 'LEVEL_1', label: 'Pemula', stars: '🍎' },
+                { id: 'LEVEL_2', label: 'Dasar', stars: '⭐⭐' },
+                { id: 'LEVEL_3', label: 'SD Awal', stars: '⭐⭐⭐' },
+                { id: 'LEVEL_4', label: 'SD', stars: '⭐⭐⭐⭐' },
               ].map(diff => (
                 <button 
                   key={diff.id}
@@ -457,7 +465,7 @@ export function Practice() {
               <h3 className="text-lg font-black text-slate-600 mb-4 uppercase tracking-widest">Lencana Baru! 🎉</h3>
               <div className="flex flex-wrap justify-center gap-4">
                 {earnedBadges.map((badgeId, idx) => {
-                  const badgeDef = mockBadges.find(b => b.id === badgeId);
+                  const badgeDef = BADGE_DEFINITIONS.find(b => b.id === badgeId);
                   if (!badgeDef) return null;
                   return (
                     <motion.div
@@ -523,12 +531,28 @@ export function Practice() {
         <div className="absolute top-[-20px] right-[-20px] w-48 h-48 bg-blue-50 rounded-full opacity-50 pointer-events-none"></div>
         <h2 className="text-lg sm:text-xl font-bold text-slate-400 uppercase tracking-widest mb-4 sm:mb-6 relative z-10">Berapa Hasilnya?</h2>
         
-        <div className="text-[5rem] leading-none sm:text-8xl md:text-9xl font-black text-slate-800 tracking-wider relative z-10 flex justify-center items-center gap-3 sm:gap-6">
-          <span className="drop-shadow-sm">{currentQ.operand1}</span>
-          <span className="text-blue-500 drop-shadow-sm">{getOperationSymbol(currentQ.operation)}</span>
-          <span className="drop-shadow-sm">{currentQ.operand2}</span>
-          <span className="text-slate-300">=</span>
-        </div>
+        {selectedDiff === 'LEVEL_1' ? (
+          <div className="flex flex-col items-center gap-6 relative z-10 my-4">
+            <div className="flex flex-wrap justify-center gap-2 max-w-[200px]">
+              {Array.from({ length: currentQ.operand1 }).map((_, i) => (
+                <span key={`op1-${i}`} className="text-4xl">🍎</span>
+              ))}
+            </div>
+            <div className="text-4xl text-blue-500 font-black">{getOperationSymbol(currentQ.operation)}</div>
+            <div className="flex flex-wrap justify-center gap-2 max-w-[200px]">
+              {Array.from({ length: currentQ.operand2 }).map((_, i) => (
+                <span key={`op2-${i}`} className="text-4xl">🍎</span>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div className="text-[5rem] leading-none sm:text-8xl md:text-9xl font-black text-slate-800 tracking-wider relative z-10 flex justify-center items-center gap-3 sm:gap-6">
+            <span className="drop-shadow-sm">{currentQ.operand1}</span>
+            <span className="text-blue-500 drop-shadow-sm">{getOperationSymbol(currentQ.operation)}</span>
+            <span className="drop-shadow-sm">{currentQ.operand2}</span>
+            <span className="text-slate-300">=</span>
+          </div>
+        )}
 
         <AnimatePresence>
           {feedback === 'CORRECT' && (
@@ -558,35 +582,56 @@ export function Practice() {
         </AnimatePresence>
       </div>
 
-      {/* Answer Display */}
-      <div className="bg-white rounded-[32px] p-4 sm:p-6 border-4 border-blue-100 flex justify-between items-center min-h-[100px] sm:min-h-[120px] shadow-sm relative overflow-hidden">
-        <div className="text-6xl sm:text-7xl font-black text-blue-600 tracking-widest w-full text-center">
-          {answer || <span className="text-slate-200 animate-pulse">?</span>}
+      {/* Answer Area */}
+      {selectedDiff === 'LEVEL_1' ? (
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
+          {/* Generate 4 multiple choices including the correct answer */}
+          {[
+            currentQ.correctAnswer,
+            Math.max(1, currentQ.correctAnswer - 1),
+            currentQ.correctAnswer + 1,
+            Math.max(2, currentQ.correctAnswer + 2)
+          ].sort(() => Math.random() - 0.5).map((choice, idx) => (
+            <Button
+              key={`${currentIndex}-${choice}-${idx}`}
+              variant="default"
+              className="h-24 sm:h-32 text-4xl sm:text-6xl font-black rounded-[32px] border-4 bg-white hover:bg-blue-50 hover:border-blue-300 transition-colors"
+              onClick={() => handleNumberClick(choice.toString())}
+            >
+              {choice}
+            </Button>
+          ))}
         </div>
-      </div>
-
-      {/* Custom Numpad for Kids */}
-      <div className="grid grid-cols-3 gap-3 md:gap-4">
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
-          <Button 
-            key={num} 
-            variant="default" 
-            className="h-20 sm:h-24 md:h-28 text-4xl sm:text-5xl md:text-6xl font-black rounded-[32px]"
-            onClick={() => handleNumberClick(num.toString())}
-          >
-            {num}
-          </Button>
-        ))}
-        <Button variant="danger" className="h-20 sm:h-24 md:h-28 text-lg sm:text-2xl uppercase tracking-wider rounded-[32px]" onClick={handleClear}>
-          Hapus
-        </Button>
-        <Button variant="default" className="h-20 sm:h-24 md:h-28 text-4xl sm:text-5xl md:text-6xl font-black rounded-[32px]" onClick={() => handleNumberClick('0')}>
-          0
-        </Button>
-        <Button variant="primary" className="h-20 sm:h-24 md:h-28 text-xl sm:text-3xl font-black rounded-[32px] uppercase tracking-widest" onClick={checkAnswer}>
-          CEK
-        </Button>
-      </div>
+      ) : (
+        <>
+          <div className="bg-white rounded-[32px] p-4 sm:p-6 border-4 border-blue-100 flex justify-between items-center min-h-[100px] sm:min-h-[120px] shadow-sm relative overflow-hidden">
+            <div className="text-6xl sm:text-7xl font-black text-blue-600 tracking-widest w-full text-center">
+              {answer || <span className="text-slate-200 animate-pulse">?</span>}
+            </div>
+          </div>
+          <div className="grid grid-cols-3 gap-2 md:gap-3 mt-6">
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
+              <Button 
+                key={num} 
+                variant="default" 
+                className="h-16 sm:h-20 md:h-24 text-3xl sm:text-4xl md:text-5xl font-black rounded-2xl md:rounded-[32px]"
+                onClick={() => handleNumberClick(num.toString())}
+              >
+                {num}
+              </Button>
+            ))}
+            <Button variant="danger" className="h-16 sm:h-20 md:h-24 text-sm sm:text-lg uppercase tracking-wider rounded-2xl md:rounded-[32px]" onClick={handleClear}>
+              Hapus
+            </Button>
+            <Button variant="default" className="h-16 sm:h-20 md:h-24 text-3xl sm:text-4xl md:text-5xl font-black rounded-2xl md:rounded-[32px]" onClick={() => handleNumberClick('0')}>
+              0
+            </Button>
+            <Button variant="primary" className="h-16 sm:h-20 md:h-24 text-lg sm:text-2xl font-black rounded-2xl md:rounded-[32px] uppercase tracking-widest" onClick={checkAnswer}>
+              CEK
+            </Button>
+          </div>
+        </>
+      )}
     </div>
   );
 }

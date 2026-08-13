@@ -1,6 +1,6 @@
 export type Operation = 'add' | 'sub' | 'mul' | 'div' | 'mix';
-export type Difficulty = 'BEGINNER' | 'EASY' | 'MEDIUM' | 'HARD' | 'ADVANCED';
-export const DIFFICULTY_LEVELS: Difficulty[] = ['BEGINNER', 'EASY', 'MEDIUM', 'HARD', 'ADVANCED'];
+export type Difficulty = 'LEVEL_1' | 'LEVEL_2' | 'LEVEL_3' | 'LEVEL_4';
+export const DIFFICULTY_LEVELS: Difficulty[] = ['LEVEL_1', 'LEVEL_2', 'LEVEL_3', 'LEVEL_4'];
 
 export interface Question {
   id: string;
@@ -38,83 +38,59 @@ export function generateQuestion(operation: Operation, difficulty: Difficulty): 
   let correctAnswer = 0;
 
   switch (difficulty) {
-    case 'BEGINNER':
+    case 'LEVEL_1': // Pemula (1-10)
       if (op === 'add') {
         operand1 = getRandomInt(1, 5);
         operand2 = getRandomInt(1, 5);
-      } else if (op === 'sub') {
-        operand1 = getRandomInt(2, 10);
+      } else {
+        // Fallback for others if selected by accident, though Level 1 is usually just addition
+        operand1 = getRandomInt(2, 5);
         operand2 = getRandomInt(1, operand1 - 1);
-      } else if (op === 'mul') {
-        operand1 = getRandomInt(1, 3);
+        op = 'sub';
+      }
+      break;
+    case 'LEVEL_2': // Dasar (1-20)
+      if (op === 'add') {
+        operand1 = getRandomInt(1, 15);
         operand2 = getRandomInt(1, 5);
-      } else if (op === 'div') {
-        operand2 = getRandomInt(1, 3);
-        correctAnswer = getRandomInt(1, 4);
-        operand1 = operand2 * correctAnswer;
-      }
-      break;
-    case 'EASY':
-      if (op === 'add') {
-        operand1 = getRandomInt(1, 20);
-        operand2 = getRandomInt(1, 20);
       } else if (op === 'sub') {
-        operand1 = getRandomInt(10, 30);
+        operand1 = getRandomInt(10, 20);
         operand2 = getRandomInt(1, operand1 - 1);
-      } else if (op === 'mul') {
-        operand1 = getRandomInt(2, 6);
-        operand2 = getRandomInt(2, 6);
-      } else if (op === 'div') {
-        operand2 = getRandomInt(2, 6);
-        correctAnswer = getRandomInt(2, 6);
-        operand1 = operand2 * correctAnswer;
+      } else {
+        operand1 = getRandomInt(1, 5);
+        operand2 = getRandomInt(1, 5);
+        op = 'add';
       }
       break;
-    case 'MEDIUM':
+    case 'LEVEL_3': // SD Awal (1-50)
       if (op === 'add') {
-        operand1 = getRandomInt(10, 100);
-        operand2 = getRandomInt(10, 100);
-      } else if (op === 'sub') {
-        operand1 = getRandomInt(50, 150);
-        operand2 = getRandomInt(10, operand1 - 1);
-      } else if (op === 'mul') {
-        operand1 = getRandomInt(3, 10);
-        operand2 = getRandomInt(3, 10);
-      } else if (op === 'div') {
-        operand2 = getRandomInt(3, 10);
-        correctAnswer = getRandomInt(3, 10);
-        operand1 = operand2 * correctAnswer;
-      }
-      break;
-    case 'HARD':
-      if (op === 'add') {
-        operand1 = getRandomInt(100, 500);
-        operand2 = getRandomInt(100, 500);
-      } else if (op === 'sub') {
-        operand1 = getRandomInt(200, 800);
-        operand2 = getRandomInt(50, operand1 - 10);
-      } else if (op === 'mul') {
-        operand1 = getRandomInt(5, 20);
+        operand1 = getRandomInt(10, 30);
         operand2 = getRandomInt(5, 20);
+      } else if (op === 'sub') {
+        operand1 = getRandomInt(20, 50);
+        operand2 = getRandomInt(5, 19);
+      } else if (op === 'mul') {
+        operand1 = getRandomInt(2, 5);
+        operand2 = getRandomInt(2, 5);
       } else if (op === 'div') {
-        operand2 = getRandomInt(4, 20);
-        correctAnswer = getRandomInt(4, 15);
+        operand2 = getRandomInt(2, 5);
+        correctAnswer = getRandomInt(2, 5);
         operand1 = operand2 * correctAnswer;
       }
       break;
-    case 'ADVANCED':
+    case 'LEVEL_4': // SD (1-100+)
       if (op === 'add') {
-        operand1 = getRandomInt(500, 2000);
-        operand2 = getRandomInt(500, 2000);
+        operand1 = getRandomInt(20, 80);
+        operand2 = getRandomInt(10, 50);
       } else if (op === 'sub') {
-        operand1 = getRandomInt(1000, 3000);
-        operand2 = getRandomInt(100, operand1 - 100);
+        operand1 = getRandomInt(50, 100);
+        operand2 = getRandomInt(10, 49);
       } else if (op === 'mul') {
-        operand1 = getRandomInt(10, 50);
-        operand2 = getRandomInt(10, 30);
+        operand1 = getRandomInt(4, 9);
+        operand2 = getRandomInt(4, 9);
       } else if (op === 'div') {
-        operand2 = getRandomInt(10, 30);
-        correctAnswer = getRandomInt(10, 30);
+        operand2 = getRandomInt(3, 9);
+        correctAnswer = getRandomInt(3, 9);
         operand1 = operand2 * correctAnswer;
       }
       break;
@@ -161,11 +137,10 @@ export function calculateResults(
   let xp = correctCount * 10;
   // Difficulty Multiplier
   const diffMultiplier = {
-    'BEGINNER': 1,
-    'EASY': 1.2,
-    'MEDIUM': 1.5,
-    'HARD': 2,
-    'ADVANCED': 3
+    'LEVEL_1': 1,
+    'LEVEL_2': 1.2,
+    'LEVEL_3': 1.5,
+    'LEVEL_4': 2
   }[difficulty];
   
   xp = Math.round(xp * diffMultiplier);

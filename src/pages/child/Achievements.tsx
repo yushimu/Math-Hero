@@ -1,10 +1,12 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { mockBadges, mockChildProfile } from '../../data/mock';
 import { Lock } from 'lucide-react';
+import { BADGE_DEFINITIONS } from '../../lib/badges';
+import { useChildContext } from '../../lib/contexts/ChildContext';
 
 export function Achievements() {
-  const ownedBadges = mockChildProfile.unlockedBadges;
+  const { activeChild } = useChildContext();
+  const ownedBadges = activeChild?.unlockedBadges || [];
 
   return (
     <div className="space-y-8 pb-12">
@@ -13,8 +15,15 @@ export function Achievements() {
         <p className="text-slate-500 font-bold">Kumpulkan semua lencana dengan menyelesaikan misi dan tantangan!</p>
       </div>
 
+      {BADGE_DEFINITIONS.length === 0 ? (
+        <div className="text-center p-12 bg-white rounded-3xl border-4 border-slate-100">
+          <div className="text-5xl mb-4">🏆</div>
+          <h2 className="text-xl font-bold text-slate-400">Belum ada lencana yang terbuka</h2>
+          <p className="text-slate-400">Teruslah berlatih untuk mendapatkan lencana pertamamu!</p>
+        </div>
+      ) : (
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
-        {mockBadges.map((badge, idx) => {
+        {BADGE_DEFINITIONS.map((badge, idx) => {
           const isOwned = ownedBadges.includes(badge.id);
 
           return (
@@ -47,6 +56,7 @@ export function Achievements() {
           );
         })}
       </div>
+      )}
     </div>
   );
 }
